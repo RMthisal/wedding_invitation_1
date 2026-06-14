@@ -12,18 +12,24 @@
 
     <!-- Background Audio -->
     <audio id="bg-music" loop preload="auto">
-      <!-- We will use a placeholder audio file from a public royalty free source or wait for user to provide one -->
-      <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_e0828d11c7.mp3" type="audio/mpeg">
+      <source src="/wedding-music.mp3" type="audio/mpeg">
     </audio>
 
     <div id="audio-toggle" title="Play/Pause Music">
-      <!-- Play Icon SVG -->
-      <svg class="play-icon" viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z" />
+      <!-- Music Note On (Playing) -->
+      <svg class="play-icon" viewBox="0 0 24 24" style="display: none;">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
       </svg>
-      <!-- Pause Icon SVG (hidden initially) -->
-      <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
-        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      <!-- Music Note Off (Paused) -->
+      <svg class="pause-icon" viewBox="0 0 24 24">
+        <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73l4.73 4.73c-.23.47-.63.85-1.14 1.05v2.09c1.07-.36 1.95-1.07 2.53-2.01L20.73 21 22 19.73 4.27 3zM14 7h4V3h-6v4.61l2 2V7z"/>
+      </svg>
+    </div>
+    
+    <!-- Scroll Chevron -->
+    <div id="scroll-chevron" title="Next Section">
+      <svg viewBox="0 0 24 24">
+        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
       </svg>
     </div>
 

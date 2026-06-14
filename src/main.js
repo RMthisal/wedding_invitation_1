@@ -1,7 +1,7 @@
 import './style.css';
 import { initPetals } from './petals.js';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -125,12 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
   audioToggle.addEventListener('click', () => {
     if (isPlaying) {
       audio.pause();
-      playIcon.style.display = 'block';
-      pauseIcon.style.display = 'none';
+      // Now paused: show strikethrough (pause-icon), hide normal note (play-icon)
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
     } else {
       audio.play().then(() => {
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        // Now playing: show normal note (play-icon), hide strikethrough (pause-icon)
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
       }).catch(err => console.log('Audio playback failed', err));
     }
     isPlaying = !isPlaying;
@@ -140,17 +142,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const startAudioOnInteraction = () => {
     if (!isPlaying) {
       audio.play().then(() => {
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
         isPlaying = true;
-      }).catch(() => {
-        // Autoplay blocked, wait for manual click
+      }).catch((err) => {
+        console.log('Autoplay blocked by browser policy:', err);
       });
-      window.removeEventListener('scroll', startAudioOnInteraction);
-      window.removeEventListener('click', startAudioOnInteraction);
+      // Remove listeners once interaction occurs
+      document.removeEventListener('scroll', startAudioOnInteraction);
+      document.removeEventListener('click', startAudioOnInteraction);
+      document.removeEventListener('touchstart', startAudioOnInteraction);
     }
   };
   
-  window.addEventListener('scroll', startAudioOnInteraction, { once: true });
-  window.addEventListener('click', startAudioOnInteraction, { once: true });
+  document.addEventListener('scroll', startAudioOnInteraction, { once: true });
+  document.addEventListener('click', startAudioOnInteraction, { once: true });
+  document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
+
+  // 6. Scroll Chevron Logic
+  const chevron = document.getElementById('scroll-chevron');
+  const sections = Array.from(document.querySelectorAll('section, footer'));
+
+  if (chevron) {
+    chevron.addEventListener('click', () => {
+      // Find the first section whose top is below the current viewport
+      const nextSection = sections.find(sec => {
+        const rect = sec.getBoundingClientRect();
+        return Math.round(rect.top) > 50; // 50px buffer to prevent sticky matching
+      });
+
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Force GSAP ScrollTrigger to update during the native smooth scroll
+        // This fixes the issue on browsers that throttle scroll events during smooth scrolling
+        let frames = 0;
+        function updateGSAP() {
+          ScrollTrigger.update();
+          frames++;
+          if (frames < 120) requestAnimationFrame(updateGSAP); // ~2 seconds of updates
+        }
+        updateGSAP();
+      }
+    });
+
+    // Hide chevron when reaching the last section (footer)
+    window.addEventListener('scroll', () => {
+      const lastSection = sections[sections.length - 1];
+      const rect = lastSection.getBoundingClientRect();
+      // If the top of the footer is mostly visible in the viewport
+      if (rect.top <= window.innerHeight - 50) {
+        chevron.style.opacity = '0';
+        chevron.style.pointerEvents = 'none';
+      } else {
+        chevron.style.opacity = '1';
+        chevron.style.pointerEvents = 'auto';
+      }
+    });
+  }
 });
