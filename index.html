@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dilchi & Indika | Wedding Invitation</title>
+    <meta name="description" content="Join us to celebrate the wedding of Dilchi & Indika on 29th October 2026." />
+  </head>
+  <body>
+    <!-- Background Canvas for 3D Petals -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Background Audio -->
+    <audio id="bg-music" loop preload="auto">
+      <!-- We will use a placeholder audio file from a public royalty free source or wait for user to provide one -->
+      <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_e0828d11c7.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="audio-toggle" title="Play/Pause Music">
+      <!-- Play Icon SVG -->
+      <svg class="play-icon" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+      <!-- Pause Icon SVG (hidden initially) -->
+      <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      </svg>
+    </div>
+
+    <!-- Section 1: Hero -->
+    <section id="hero">
+      <div class="hero-content">
+        <div class="wreath-container">
+          <!-- Watercolor Wreath Image -->
+          <img src="/wreath.png" class="leaf-wreath" id="hero-wreath" alt="Watercolor Leaf Wreath">
+          <h1 class="hero-names">
+            <span class="name">Dilchi</span>
+            <span class="amp">&amp;</span>
+            <span class="name">Indika</span>
+          </h1>
+        </div>
+        <div class="date-container">
+          <p class="subtitle hero-date">29th October 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Events -->
+    <section id="events" class="gsap-fade-up">
+      <h2 class="section-title">The Celebration</h2>
+      <div class="events-grid">
+        <div class="glass-card event-item">
+          <h3>Poruwa Ceremony</h3>
+          <p class="time">4:00 PM</p>
+          <p>The Sky Lounge Wings,<br>The Epitome Hotel</p>
+        </div>
+        <div class="glass-card event-item">
+          <h3>Wedding Ceremony</h3>
+          <p class="time">7:00 PM</p>
+          <p>The Fortress Ballroom,<br>The Epitome Hotel</p>
+        </div>
+      </div>
+      <div style="margin-top: 3rem; text-align: center;">
+        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+of+Dilchi+%26+Indika&dates=20261029T103000Z/20261029T183000Z&details=Join+us+to+celebrate+the+wedding+of+Dilchi+%26+Indika!&location=The+Epitome+Hotel%2C+Kurunegala%2C+Sri+Lanka" target="_blank" rel="noopener noreferrer" class="btn">
+          <svg style="width:16px;height:16px;vertical-align:middle;margin-right:8px;margin-bottom:2px;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+          </svg>
+          Add to Google Calendar
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 3: Live Countdown -->
+    <section id="countdown" class="gsap-fade-up">
+      <h2 class="section-title">Counting Down</h2>
+      <div class="glass-card">
+        <div class="countdown-container" id="countdown-timer">
+          <div class="countdown-item">
+            <span class="countdown-number" id="cd-days">00</span>
+            <span class="countdown-label">Days</span>
+          </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="cd-hours">00</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="cd-mins">00</span>
+            <span class="countdown-label">Mins</span>
+          </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="cd-secs">00</span>
+            <span class="countdown-label">Secs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Venue -->
+    <section id="venue" class="gsap-fade-up">
+      <h2 class="section-title">The Venue</h2>
+      <div class="glass-card venue-card">
+        <div class="venue-layout">
+          <div class="venue-image-wrapper">
+            <img src="/hotel.png" alt="The Epitome Hotel" class="venue-photo">
+          </div>
+          <div class="venue-details">
+            <div class="map-container">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15833.029858694082!2d80.34586414999999!3d7.4913735999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae339a66d0ef035%3A0xe543fa0c968f2fbb!2sThe%20Epitome!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <h3>The Epitome Hotel, Kurunegala</h3>
+            <p class="time">Ceremonies begin at 4:00 PM</p>
+            <a href="https://maps.app.goo.gl/vxVrq4mYmaTXwFpe8" target="_blank" class="btn">Get Directions</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Couple Message -->
+    <section id="message" class="gsap-fade-up">
+      <div class="glass-card">
+        <p class="message-text">"We are beyond grateful to have you as part of our special day. Your presence turns this celebration into a lifelong memory. Come, eat, dance, and bless us as we begin our forever together!"</p>
+      </div>
+    </section>
+
+    <!-- Section 6: Footer -->
+    <footer>
+      <div class="floral-divider"></div>
+      <h3 class="hero-names" style="font-size: 2rem;">With Love, Dilchi & Indika</h3>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
