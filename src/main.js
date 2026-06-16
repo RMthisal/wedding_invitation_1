@@ -9,36 +9,78 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize 3D Petals
   initPetals('webgl-canvas');
 
-  // 2. Initial Page Load Animation
-  const tl = gsap.timeline();
+  // 2. Splash Screen & Initial Page Load Animation
+  function playHeroAnimation() {
+    const tl = gsap.timeline();
 
-  // Reveal Wreath
-  tl.fromTo(
-    '#hero-wreath',
-    { scale: 0.8, opacity: 0, rotation: -30 },
-    { scale: 1, opacity: 1, rotation: 0, duration: 2, ease: 'power3.out' }
-  )
-  // Reveal hero names stagger
-  .fromTo(
-    '.hero-names .name',
-    { y: 30, opacity: 0, scale: 0.9 },
-    { y: 0, opacity: 1, scale: 1, duration: 1.2, stagger: 0.2, ease: 'back.out(1.2)' },
-    '-=1.5'
-  )
-  // Reveal ampersand
-  .fromTo(
-    '.hero-names .amp',
-    { scale: 0, opacity: 0, rotation: -90 },
-    { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'back.out(2)' },
-    '-=1.2'
-  )
-  // Date comes from below the wreath
-  .fromTo(
-    '.hero-date',
-    { opacity: 0, y: 60 },
-    { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' },
-    '-=1'
-  );
+    // Reveal Wreath
+    tl.fromTo(
+      '#hero-wreath',
+      { scale: 0.8, opacity: 0, rotation: -30 },
+      { scale: 1, opacity: 1, rotation: 0, duration: 2, ease: 'power3.out' }
+    )
+    // Reveal hero names stagger
+    .fromTo(
+      '.hero-names .name',
+      { y: 30, opacity: 0, scale: 0.9 },
+      { y: 0, opacity: 1, scale: 1, duration: 1.2, stagger: 0.2, ease: 'back.out(1.2)' },
+      '-=1.5'
+    )
+    // Reveal ampersand
+    .fromTo(
+      '.hero-names .amp',
+      { scale: 0, opacity: 0, rotation: -90 },
+      { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'back.out(2)' },
+      '-=1.2'
+    )
+    // Date comes from below the wreath
+    .fromTo(
+      '.hero-date',
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' },
+      '-=1'
+    );
+  }
+
+  const envelopeWrapper = document.querySelector('.envelope-wrapper');
+  const splashScreen = document.getElementById('splash-screen');
+  let envelopeOpened = false;
+
+  if (envelopeWrapper) {
+    envelopeWrapper.addEventListener('click', () => {
+      if (envelopeOpened) return;
+      envelopeOpened = true;
+
+      // Hide tap instruction
+      gsap.to('.tap-instruction', { opacity: 0, duration: 0.3 });
+
+      const envTl = gsap.timeline();
+
+      // 1. Pop Wax Seal & Zoom
+      envTl.to('.envelope-wrapper', { scale: 1.05, duration: 0.5, ease: 'power2.out' })
+           .to('.wax-seal', { scale: 1.2, opacity: 0, duration: 0.4, ease: 'power2.in' }, '<')
+           // 2. Open Flap
+           .to('.envelope-flap', { rotateX: 180, duration: 0.8, ease: 'power3.inOut' }, '-=0.1')
+           .set('.envelope-flap', { zIndex: 0 }) // Move flap behind letter
+           // 3. Slide Letter Completely Out
+           .to('.envelope-letter', { y: -160, zIndex: 10, scale: 1.1, duration: 1, ease: 'back.out(1.2)' }, '-=0.2')
+           // 4. Envelope falls away while fading
+           .to('.envelope', { background: 'transparent', boxShadow: 'none', duration: 0.4 }, '+=0.4')
+           .to(['.envelope-pocket', '.envelope-flap'], { y: 200, opacity: 0, duration: 0.8, ease: 'power3.in' }, '<')
+           // 5. Letter zooms in massively to fill screen (acting as transition)
+           .to('.envelope-letter', { scale: 15, opacity: 0, duration: 1.2, ease: 'power4.inOut' }, '-=0.3')
+           // Fade out splash screen wrapper completely
+           .to('#splash-screen', { opacity: 0, duration: 0.5 }, '-=0.8')
+           .call(() => {
+             splashScreen.style.display = 'none';
+             document.body.classList.remove('no-scroll');
+             playHeroAnimation();
+           });
+    });
+  } else {
+    document.body.classList.remove('no-scroll');
+    playHeroAnimation();
+  }
 
   // 3. ScrollTrigger Animations for Sections
   const fadeUpElements = document.querySelectorAll('.gsap-fade-up');
@@ -63,14 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // SplitText style manual word reveal for the Couple Message
   const messageEl = document.querySelector('.message-text');
   if (messageEl) {
-    const text = messageEl.innerText;
+    const text = messageEl.textContent || messageEl.innerText;
     messageEl.innerHTML = '';
-    const words = text.split(' ');
+    const words = text.trim().split(/\s+/);
     words.forEach(word => {
       const span = document.createElement('span');
       span.innerText = word + ' ';
       span.style.opacity = '0';
       span.style.display = 'inline-block';
+      // Add a small margin-right to ensure spaces are respected across all browsers when display is inline-block
+      span.style.marginRight = '0.15em'; 
       messageEl.appendChild(span);
     });
 
