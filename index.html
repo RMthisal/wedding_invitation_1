@@ -11,33 +11,22 @@
 <body class="no-scroll">
   <!-- Envelope Splash Screen -->
   <div id="splash-screen">
-    <div class="envelope-wrapper">
-      <div class="envelope">
-        <div class="envelope-letter">
-          <div
-            style="border: 1px solid var(--champagne-gold); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 2px;">
-            <h2 style="font-family: var(--font-heading); color: var(--text-dark); margin: 0; font-size: 1.8rem;">Dilchi
-              & Indika</h2>
-            <p
-              style="font-family: var(--font-body); font-weight: 500; font-size: 0.75rem; margin-top: 0.5rem; color: var(--champagne-gold); letter-spacing: 0.15em; text-transform: uppercase;">
-              Are Getting Married</p>
-          </div>
-        </div>
-        <div class="envelope-flap"></div>
-        <div class="envelope-pocket"></div>
-        <div class="wax-seal">
-          <span>D&I</span>
-        </div>
-      </div>
-      <p class="tap-instruction">Tap to Open</p>
+    <div id="entry-screen">
+      <h2
+        style="font-family: var(--font-heading); color: var(--text-dark); margin-bottom: 2rem; font-size: clamp(2.5rem, 6vw, 4rem);">
+        Dilchi & Indika</h2>
+      <button id="enter-btn" class="btn">Tap to Enter</button>
     </div>
+    <video id="splash-video" muted playsinline preload="auto">
+      <source src="/envelope.mp4" type="video/mp4">
+    </video>
   </div>
 
   <!-- Background Canvas for 3D Petals -->
   <canvas id="webgl-canvas"></canvas>
 
   <!-- Background Audio -->
-  <audio id="bg-music" loop preload="auto">
+  <audio id="bg-music" loop autoplay preload="auto">
     <source src="/wedding-music.mp3" type="audio/mpeg">
   </audio>
 
@@ -81,17 +70,17 @@
   <!-- Section 2: Events -->
   <section id="events" class="gsap-fade-up">
     <div
-      style="text-align: center; margin-bottom: 3.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+      style="text-align: center; margin-bottom: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
       <h2 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 0; line-height: 1.2;">The
         Celebration</h2>
       <div
-        style="width: 120px; height: 1.5px; background: linear-gradient(90deg, transparent, var(--champagne-gold), transparent); margin: 0.8rem 0;">
+        style="width: 120px; height: 1.5px; background: linear-gradient(90deg, transparent, var(--champagne-gold), transparent); margin: 0.5rem 0;">
       </div>
       <p
-        style="font-family: var(--font-heading); font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-style: italic; color: var(--champagne-gold); margin: 0;">
+        style="font-family: var(--font-heading); font-size: clamp(1.4rem, 3vw, 2.4rem); font-style: italic; color: var(--champagne-gold); margin: 0;">
         Save the Date</p>
       <p
-        style="font-family: var(--font-body); font-weight: 500; font-size: 1.1rem; color: var(--text-dark); letter-spacing: 0.2em; text-transform: uppercase; margin: 0.5rem 0 0 0;">
+        style="font-family: var(--font-body); font-weight: 500; font-size: clamp(0.9rem, 2vw, 1.1rem); color: var(--text-dark); letter-spacing: 0.15em; text-transform: uppercase; margin: 0.2rem 0 0 0;">
         29<sup style="text-transform: lowercase;">th</sup> October 2026</p>
     </div>
     <div class="events-grid" style="margin-top: 0;">
@@ -106,7 +95,7 @@
         <p>The Fortress Ballroom,<br>The Epitome Hotel</p>
       </div>
     </div>
-    <div style="margin-top: 3rem; text-align: center;">
+    <div style="margin-top: 1.5rem; text-align: center;">
       <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+of+Dilchi+%26+Indika&dates=20261029T103000Z/20261029T183000Z&details=Join+us+to+celebrate+the+wedding+of+Dilchi+%26+Indika!&location=The+Epitome+Hotel%2C+Kurunegala%2C+Sri+Lanka"
         target="_blank" rel="noopener noreferrer" class="btn">
         <svg style="width:16px;height:16px;vertical-align:middle;margin-right:8px;margin-bottom:2px;"

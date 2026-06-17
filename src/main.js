@@ -42,40 +42,70 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  const envelopeWrapper = document.querySelector('.envelope-wrapper');
   const splashScreen = document.getElementById('splash-screen');
-  let envelopeOpened = false;
+  const splashVideo = document.getElementById('splash-video');
+  const entryScreen = document.getElementById('entry-screen');
+  const enterBtn = document.getElementById('enter-btn');
 
-  if (envelopeWrapper) {
-    envelopeWrapper.addEventListener('click', () => {
-      if (envelopeOpened) return;
-      envelopeOpened = true;
+  if (splashVideo && entryScreen && enterBtn) {
+    // 1. Entry Button Click
+    enterBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent splash screen skip
+      
+      // Fade out entry screen
+      entryScreen.style.opacity = '0';
+      setTimeout(() => {
+        entryScreen.style.display = 'none';
+      }, 800);
 
-      // Hide tap instruction
-      gsap.to('.tap-instruction', { opacity: 0, duration: 0.3 });
+      // Start the video
+      splashVideo.play().catch(err => console.log('Video play failed:', err));
 
-      const envTl = gsap.timeline();
+      // Start the audio
+      const bgAudio = document.getElementById('bg-music');
+      const pIcon = document.querySelector('.play-icon');
+      const pPause = document.querySelector('.pause-icon');
+      
+      if (bgAudio) {
+        bgAudio.play().then(() => {
+          if (pIcon && pPause) {
+            pIcon.style.display = 'block';
+            pPause.style.display = 'none';
+          }
+          // Note: The global isPlaying variable sync happens implicitly due to 
+          // the scroll/click listeners at the bottom or the fact that audio is playing.
+        }).catch(err => console.log('Audio play failed:', err));
+      }
+    });
 
-      // 1. Pop Wax Seal & Zoom
-      envTl.to('.envelope-wrapper', { scale: 1.05, duration: 0.5, ease: 'power2.out' })
-           .to('.wax-seal', { scale: 1.2, opacity: 0, duration: 0.4, ease: 'power2.in' }, '<')
-           // 2. Open Flap
-           .to('.envelope-flap', { rotateX: 180, duration: 0.8, ease: 'power3.inOut' }, '-=0.1')
-           .set('.envelope-flap', { zIndex: 0 }) // Move flap behind letter
-           // 3. Slide Letter Completely Out
-           .to('.envelope-letter', { y: -160, zIndex: 10, scale: 1.1, duration: 1, ease: 'back.out(1.2)' }, '-=0.2')
-           // 4. Envelope falls away while fading
-           .to('.envelope', { background: 'transparent', boxShadow: 'none', duration: 0.4 }, '+=0.4')
-           .to(['.envelope-pocket', '.envelope-flap'], { y: 200, opacity: 0, duration: 0.8, ease: 'power3.in' }, '<')
-           // 5. Letter zooms in massively to fill screen (acting as transition)
-           .to('.envelope-letter', { scale: 15, opacity: 0, duration: 1.2, ease: 'power4.inOut' }, '-=0.3')
-           // Fade out splash screen wrapper completely
-           .to('#splash-screen', { opacity: 0, duration: 0.5 }, '-=0.8')
-           .call(() => {
-             splashScreen.style.display = 'none';
-             document.body.classList.remove('no-scroll');
-             playHeroAnimation();
-           });
+    // 2. Transition when the video finishes
+    splashVideo.addEventListener('ended', () => {
+      gsap.to('#splash-screen', { 
+        opacity: 0, 
+        duration: 0.8, 
+        ease: 'power2.inOut',
+        onComplete: () => {
+          splashScreen.style.display = 'none';
+          document.body.classList.remove('no-scroll');
+          playHeroAnimation();
+        }
+      });
+    });
+    
+    // Optional: Allow user to skip video by clicking during playback (if entry screen is gone)
+    splashVideo.addEventListener('click', () => {
+      if (entryScreen.style.display !== 'none') return; // Do not skip if entry screen is still there
+      
+      gsap.to('#splash-screen', { 
+        opacity: 0, 
+        duration: 0.8, 
+        ease: 'power2.inOut',
+        onComplete: () => {
+          splashScreen.style.display = 'none';
+          document.body.classList.remove('no-scroll');
+          playHeroAnimation();
+        }
+      });
     });
   } else {
     document.body.classList.remove('no-scroll');
@@ -165,6 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const playIcon = document.querySelector('.play-icon');
   const pauseIcon = document.querySelector('.pause-icon');
   let isPlaying = false;
+  
+  // Attempt to play music immediately
+  audio.play().then(() => {
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    isPlaying = true;
+  }).catch((err) => {
+    console.log('Immediate autoplay blocked:', err);
+  });
 
   audioToggle.addEventListener('click', () => {
     if (isPlaying) {

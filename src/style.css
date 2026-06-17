@@ -21,6 +21,10 @@ html, body {
   min-height: 100vh;
   overflow-x: hidden;
   background-color: var(--ivory-white);
+  background-image: url('/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--text-dark);
   font-family: var(--font-body);
   scroll-behavior: smooth;
@@ -47,7 +51,7 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: clamp(3rem, 10vw, 4rem) clamp(1rem, 5vw, 2rem);
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem);
 }
 
 /* Typography */
@@ -106,9 +110,9 @@ p {
 /* Buttons */
 .btn {
   display: inline-block;
-  padding: 1rem 2.5rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-dark);
@@ -119,7 +123,7 @@ p {
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .btn:hover {
@@ -283,20 +287,30 @@ p {
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   max-width: 900px;
-  margin-top: 3rem;
+  margin-top: 0;
+}
+
+.event-item {
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 .event-item h3 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  margin-bottom: 0.2rem;
 }
 .event-item p.time {
   font-weight: 500;
   color: var(--champagne-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.event-item p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
 }
 
 .countdown-container {
@@ -432,117 +446,35 @@ footer {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--ivory-white);
+  background-color: #ffffff; /* Video should cover it, but white fallback */
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   overflow: hidden;
 }
 
-.envelope-wrapper {
-  position: relative;
-  cursor: pointer;
-  perspective: 1200px;
-}
-
-.envelope {
-  position: relative;
-  width: min(320px, 90vw);
-  height: min(220px, 62vw);
-  background: linear-gradient(135deg, #f3eee6 0%, #EAE3D6 100%);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  transform-style: preserve-3d;
-  border-radius: 4px;
-}
-
-.envelope-letter {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-  background: #ffffff;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  z-index: 1;
-  padding: 8px;
-}
-
-.envelope-pocket {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #F4EFEB;
-  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
-  z-index: 3;
-  filter: drop-shadow(0 -4px 6px rgba(0,0,0,0.05));
-}
-
-.envelope-flap {
+#entry-screen {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 65%;
-  background: #FDF9F3;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  z-index: 4;
-  transform-origin: top;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
-}
-
-/* Fallback border for pocket/flap to enhance edges */
-.envelope-pocket::before, .envelope-flap::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  border: 1px solid rgba(216, 195, 165, 0.4);
-  pointer-events: none;
-}
-
-.wax-seal {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  background: var(--champagne-gold);
-  border-radius: 50%;
-  z-index: 5;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4);
+  transition: opacity 0.8s ease;
 }
 
-.wax-seal span {
-  font-family: var(--font-heading);
-  color: white;
-  font-size: 1.4rem;
-  font-style: italic;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+#splash-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.tap-instruction {
-  margin-top: 4rem;
-  font-size: 0.9rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--champagne-gold);
-  animation: pulse-instruction 2s infinite ease-in-out;
-}
 
-@keyframes pulse-instruction {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
