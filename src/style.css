@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 
 :root {
   --sage-green: #DDE8D5;
@@ -8,6 +8,7 @@
   --text-dark: #2C3E2D; /* Darker sage for readable text */
   --font-heading: 'Cormorant Garamond', serif;
   --font-body: 'Inter', sans-serif;
+  --font-names: 'Playfair Display', serif;
 }
 
 * {
@@ -245,7 +246,9 @@ p {
 }
 
 .hero-names {
-  font-weight: 600;
+  font-family: var(--font-names);
+  font-weight: 700;
+  font-style: italic;
   display: flex;
   flex-direction: column;
   align-items: center;
